@@ -14,6 +14,8 @@ void gview::draw()
 	i++;
 }
 
+void gview::drawRabbit(coord rab) {}
+
 void gview::mainloop()
 {
 	while(1)

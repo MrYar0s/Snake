@@ -8,6 +8,7 @@ class gview: public view{
 		gview();
 		virtual void draw();
 		virtual void mainloop();
+		virtual void drawRabbit(coord rab);
 };
 
 #endif //GAME_GVIEW_HPP
