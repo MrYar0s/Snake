@@ -27,9 +27,10 @@ view* view::get(const char* type)
 	return obj;
 }
 
-void view::bindkey(std::function<void(int)> callkey)
+void view::bindtick(TickFn calltick, int period)
 {
-	callkey_.push_back(callkey);
+	calltick_.push_back(calltick);
+	period_ = period;
 }
 
 int view::max_x()

@@ -19,7 +19,7 @@ enum Color
 	DEFAULT = 9
 };
 
-using KeyFn = std::function<void(int)>;
+using TickFn = std::function<void()>;
 
 class view{
 public:
@@ -29,11 +29,13 @@ public:
 	virtual void mainloop() = 0;
 	int max_x();
 	int max_y();
-	void bindkey(std::function<void(int)> callkey);
+	void bindtick(TickFn calltick, int period);
+	virtual void drawRabbit(coord rab) = 0;
 private:
 	static view* obj;
 protected:
-	std::list<KeyFn> callkey_;
+	std::list<TickFn> calltick_;
+	int period_;
 	int width;
 	int height;
 };
