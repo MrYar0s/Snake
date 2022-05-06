@@ -20,12 +20,15 @@ enum Direction
 class Game
 {
 public:
-	explicit Game(size_t num);
+	Game();
 	~Game();
-	coord& get_rabbit(size_t pos);
+	const auto& get_rabbit() const;
+	view* get_view();
 	void generate_rabbit();
 	void set_view(view* v);
-	void start();
+	void update();
+	void bindtick(int period);
+	bool isinborder(coord rabbit) const;
 private:
 	std::list<coord> rabbits_;
 	view* view_;

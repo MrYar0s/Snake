@@ -5,6 +5,7 @@
 #include <poll.h>
 #include <signal.h>
 #include <sys/ioctl.h>
+#include <chrono>
 
 termios old;
 bool final = false;
@@ -120,8 +121,15 @@ void tview::draw()
 	setcolor(GREEN, BLUE);
 	gotoxy(width/2, 0);
 	puts("SNAKE");
+	std::cout << std::flush;
 }
 
+void tview::drawRabbit(coord rab)
+{
+	gotoxy(rab.first, rab.second);
+	setcolor(BLACK, YELLOW);
+	putc('o');
+}
 
 void on_key(char key)
 {
@@ -135,15 +143,33 @@ void tview::mainloop()
 {
 	pollfd fds = {0, POLLIN};
 	int n;
+	int nexttime = period_;
 	while(!final)
 	{
+		auto start = std::chrono::system_clock::now();
 		refresh_stats();
-		draw();
-		n = poll(&fds, 1, 500);
-		if(n == 1)
+		n = poll(&fds, 1, nexttime);
+		if(n < 0)
 		{
+			return;
+		}
+		if(n > 0)
+		{
+			auto end = std::chrono::system_clock::now();
 			unsigned char letter = getchar();
 			on_key(letter);
+			auto cur = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
+			nexttime = period_ - cur.count();
+		}
+		if(nexttime < 0 || n == 0)
+		{
+			draw();
+			for(auto&& call : calltick_)
+			{
+				call();
+				std::cout << std::flush;
+			}
+			nexttime = period_;
 		}
 	}
 }

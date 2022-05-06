@@ -1,6 +1,7 @@
 #ifndef GAME_TVIEW_HPP
 #define GAME_TVIEW_HPP
 
+#include "game.hpp"
 #include "view.hpp"
 
 class tview: public view{
@@ -8,6 +9,7 @@ public:
 	tview();
 	~tview();
 	virtual void draw();
+	virtual void drawRabbit(coord rab);
 	virtual void mainloop();
 private:
 	void clear();
@@ -21,6 +23,7 @@ private:
 	void gotoxyrel(int x, int y);
 	void box(int width, int height);
 	void refresh_stats();
+	Game* game_;
 };
 
 #endif //GAME_TVIEW_HPP
