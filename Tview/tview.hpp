@@ -2,7 +2,6 @@
 #define GAME_TVIEW_HPP
 
 #include "view.hpp"
-#include <signal.h>
 
 class tview: public view{
 	public:
@@ -15,10 +14,11 @@ class tview: public view{
 		void putc(char c);
 		void puts(const char* s);
 		void setcolor(int color);
-		void gline(int x, int y);
-		void hline(int x, int y);
+		void vline(int len);
+		void hline(int len);
 		void gotoxy(int x, int y);
-		void box();
+		void gotoxyrel(int x, int y);
+		void box(int width, int height);
 };
 
 #endif //GAME_TVIEW_HPP

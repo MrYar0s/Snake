@@ -1,21 +1,27 @@
 #include "tview.hpp"
-#include <stdio.h>
+#include <iostream>
 #include <unistd.h>
 #include <termios.h>
 #include <poll.h>
+#include <signal.h>
 
 termios old;
 bool final = false;
 
+void onsig(int sig)
+{
+	final = true;
+}
+
 tview::tview()
 {
-	printf("TEXT VIEW STARTED\n");
-	fflush(stdout);
+	std::cout << "TEXT VIEW STARTED"/*<< std::flush*/;
 	tcgetattr(0, &old);
 	termios start = old;
 	cfmakeraw(&start);
 	start.c_lflag |= ISIG;
 	tcsetattr(0, TCSANOW, &start);
+	signal(SIGINT, onsig);
 }
 
 tview::~tview()
@@ -26,52 +32,77 @@ tview::~tview()
 
 void tview::clear()
 {
-	printf("\e[H\e[J");
-	fflush(stdout);
+	std::cout << "\e[H\e[J"<< std::flush;
 }
 
 void tview::puts(const char* s)
 {
-	printf("%s", s);
-	fflush(stdout);
+	std::cout << s << std::flush;
 }
 
 void tview::putc(char c)
 {
-	printf("%c", c);
-	fflush(stdout);
+	std::cout << c << std::flush;
 }
 
 void tview::gotoxy(int x, int y)
 {
-	printf("\e[%d;%dH", y, x);
-	fflush(stdout);
+	std::cout << "\e["<< y << ";" << x << "H"/*<< std::flush*/;
 }
 
-void tview::gline(int x, int y)
+void tview::gotoxyrel(int x, int y)
 {
-	for(int i = 0; i < width; i++)
+	char xc, yc;
+	if(x < 0)
 	{
-		gotoxy(x + i, y);
-		printf("#");
-		fflush(stdout);
+		xc = 'D';
+		x = -x;
 	}
+	else {xc = 'C';}
+	if(y < 0)
+	{
+		yc = 'A';
+		y = -y;
+	}
+	else {yc = 'B';}
+	if(x) {std::cout << "\e[" << x << xc/*<< std::flush*/;}
+	if(y) {std::cout << "\e[" << y << yc/*<< std::flush*/;}
 }
 
-void tview::hline(int x, int y)
+void tview::hline(int len)
 {
-	for(int i = 0; i < height; i++)
+	for(int i = 0; i < len; i++)
 	{
-		gotoxy(x, i + y);
-		printf("#");
-		fflush(stdout);
+		std::cout << '#';
 	}
+	std::cout << std::flush;
+}
+
+void tview::vline(int len)
+{
+	for(int i = 0; i < len; i++)
+	{
+		std::cout << '#';
+		gotoxyrel(-1, 1);
+	}
+	std::cout << std::flush;
+}
+
+void tview::box(int width, int height)
+{
+	gotoxy(0, 0);
+	hline(width - 1);
+	gotoxy(0, 0);
+	vline(height);
+	gotoxy(0, height);
+	hline(width - 1);
+	gotoxy(width - 1, 0);
+	vline(height);
 }
 
 void tview::setcolor(int color)
 {
-	printf("\e[%dm", color + 30);
-	fflush(stdout);
+	std::cout << "\e[" << color + 30 << "m"/*<< std::flush*/;
 }
 
 void tview::draw()
@@ -79,19 +110,12 @@ void tview::draw()
 	refresh_stats();
 	clear();
 	setcolor(2);
-	gline(0, 0);
-	gline(0, height);
-	hline(0, 0);
-	hline(width, 0);
+	box(width, height);
 	setcolor(3);
 	gotoxy(width/2, 0);
 	puts("SNAKE");
 }
 
-void onsig(int sig)
-{
-	final = true;
-}
 
 void on_key(char key)
 {
@@ -103,22 +127,16 @@ void on_key(char key)
 
 void tview::mainloop()
 {
-	signal(SIGINT, onsig);
-	pollfd fds[1];
-	fds[0].fd = 0;
-	fds[0].events = POLLIN;
+	pollfd fds = {0, POLLIN};
 	int n;
 	while(!final)
 	{
-		n = poll(fds, 1, 500);
+		draw();
+		n = poll(&fds, 1, 500);
 		if(n == 1)
 		{
 			unsigned char letter = getchar();
 			on_key(letter);
-		}
-		if(n == 0)
-		{
-			draw();
 		}
 	}
 }
