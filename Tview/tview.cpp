@@ -102,7 +102,7 @@ void tview::box(int width, int height)
 
 void tview::setcolor(int color)
 {
-	std::cout << "\e[" << color + 30 << "m"/*<< std::flush*/;
+	std::cout << "\e[" << 48 << ";" << 5 << "m"<< "\e[" << color + 30 << "m"/*<< std::flush*/;
 }
 
 void tview::draw()
