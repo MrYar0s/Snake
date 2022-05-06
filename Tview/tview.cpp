@@ -133,11 +133,11 @@ void on_key(char key)
 
 void tview::mainloop()
 {
-	refresh_stats();
 	pollfd fds = {0, POLLIN};
 	int n;
 	while(!final)
 	{
+		refresh_stats();
 		draw();
 		n = poll(&fds, 1, 500);
 		if(n == 1)
