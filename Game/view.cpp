@@ -1,7 +1,6 @@
 #include "view.hpp"
 #include "tview.hpp"
 #include "gview.hpp"
-#include <sys/ioctl.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdio.h>
@@ -28,12 +27,9 @@ view* view::get(const char* type)
 	return obj;
 }
 
-void view::refresh_stats()
+void view::bindkey(std::function<void(int)> callkey)
 {
-	struct winsize stats;
-	ioctl(1, TIOCGWINSZ, &stats);
-	width = stats.ws_col;
-	height = stats.ws_row;
+	callkey_.push_back(callkey);
 }
 
 int view::max_x()

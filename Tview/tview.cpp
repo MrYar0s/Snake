@@ -4,6 +4,7 @@
 #include <termios.h>
 #include <poll.h>
 #include <signal.h>
+#include <sys/ioctl.h>
 
 termios old;
 bool final = false;
@@ -26,12 +27,13 @@ tview::tview()
 
 tview::~tview()
 {
-	tcsetattr(0, TCSANOW, &old);
 	clear();
+	tcsetattr(0, TCSANOW, &old);
 }
 
 void tview::clear()
 {
+	resetColor();
 	std::cout << "\e[H\e[J"<< std::flush;
 }
 
@@ -90,6 +92,7 @@ void tview::vline(int len)
 
 void tview::box(int width, int height)
 {
+	setcolor(BLACK, BLUE);
 	gotoxy(0, 0);
 	hline(width - 1);
 	gotoxy(0, 0);
@@ -100,18 +103,21 @@ void tview::box(int width, int height)
 	vline(height);
 }
 
-void tview::setcolor(int color)
+void tview::setcolor(Color fore, Color back) const
 {
-	std::cout << "\e[" << 48 << ";" << 5 << "m"<< "\e[" << color + 30 << "m"/*<< std::flush*/;
+	std::cout << "\e[" << fore + 30 << ";" << back + 40 << "m"/*<< std::flush*/;
+}
+
+void tview::resetColor () const
+{
+	setcolor(DEFAULT, DEFAULT);
 }
 
 void tview::draw()
 {
-	refresh_stats();
 	clear();
-	setcolor(2);
 	box(width, height);
-	setcolor(3);
+	setcolor(GREEN, BLUE);
 	gotoxy(width/2, 0);
 	puts("SNAKE");
 }
@@ -127,6 +133,7 @@ void on_key(char key)
 
 void tview::mainloop()
 {
+	refresh_stats();
 	pollfd fds = {0, POLLIN};
 	int n;
 	while(!final)
@@ -139,4 +146,12 @@ void tview::mainloop()
 			on_key(letter);
 		}
 	}
+}
+
+void tview::refresh_stats()
+{
+	struct winsize stats;
+	ioctl(1, TIOCGWINSZ, &stats);
+	width = stats.ws_col;
+	height = stats.ws_row;
 }
