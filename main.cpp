@@ -2,7 +2,7 @@
 
 int main(int argc, char const *argv[])
 {
-	Game game(START_RABBIT_AMOUNT);
+	Game game;
 	if(argc == 1)
 	{
 		game.set_view(view::get("text"));
@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
 	{
 		game.set_view(view::get(argv[1]));
 	}
-
-	game.start();
+	game.bindtick(500);
+	game.get_view()->mainloop();
 	return 0;
 }
