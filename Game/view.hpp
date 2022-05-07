@@ -4,8 +4,6 @@
 #include <functional>
 #include <list>
 
-using coord = typename std::pair<int, int>;
-
 enum Color
 {
 	BLACK = 0,
@@ -20,6 +18,9 @@ enum Color
 };
 
 using TickFn = std::function<void()>;
+class view;
+#include "game.hpp"
+
 
 class view{
 public:
@@ -31,6 +32,7 @@ public:
 	int max_y();
 	void bindtick(TickFn calltick, int period);
 	virtual void drawRabbit(coord rab) = 0;
+	virtual void drawSnake(const Snake& snake) = 0;
 private:
 	static view* obj;
 protected:

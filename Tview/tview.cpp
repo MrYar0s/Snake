@@ -131,6 +131,17 @@ void tview::drawRabbit(coord rab)
 	putc('o');
 }
 
+void tview::drawSnake(const Snake& snake)
+{
+	setcolor(GREEN, snake.clr_);
+	auto body = snake.get_coords();
+	for(auto cord : body)
+	{
+		gotoxy(cord.first, cord.second);
+		putc('@');
+	}
+}
+
 void on_key(char key)
 {
 	if(key == 'q')

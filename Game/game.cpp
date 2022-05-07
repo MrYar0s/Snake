@@ -5,11 +5,32 @@ std::mt19937 gen(rd());
 std::uniform_int_distribution<> distrib_x(1, WIDTH);
 std::uniform_int_distribution<> distrib_y(1, HEIGHT);
 
-Game::Game() {}
+Game::Game()
+{}
 
 void Game::bindtick(int period)
 {
 	view_->bindtick(std::bind(&Game::update, this), period);
+}
+
+Snake::Snake(std::list<coord>&& pos, Direction dir) : dir_(dir), pos_(pos) {}
+
+std::list<coord> Snake::get_coords() const
+{
+	return pos_;
+}
+
+Snake& Game::make_snake(size_t len)
+{
+	std::list<coord> body;
+	body.push_back(std::make_pair(10, 30));
+	Direction dir = RIGHT;
+	for(size_t i = 0; i < len; i++)
+	{
+		body.push_back(body.back());
+	}
+	snakes_.push_back(Snake(std::move(body), dir));
+	return snakes_.back();
 }
 
 void Game::set_view(view* v)
@@ -60,6 +81,10 @@ void Game::update()
 	for(auto rabbit_it : rabbits_)
 	{
 		view_->drawRabbit(rabbit_it);
+	}
+	for(auto snake_it : snakes_)
+	{
+		view_->drawSnake(snake_it);
 	}
 }
 

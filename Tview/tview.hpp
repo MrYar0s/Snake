@@ -1,7 +1,6 @@
 #ifndef GAME_TVIEW_HPP
 #define GAME_TVIEW_HPP
 
-#include "game.hpp"
 #include "view.hpp"
 
 class tview: public view{
@@ -10,6 +9,7 @@ public:
 	~tview();
 	virtual void draw();
 	virtual void drawRabbit(coord rab);
+	virtual void drawSnake(const Snake& snake);
 	virtual void mainloop();
 private:
 	void clear();

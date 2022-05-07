@@ -1,14 +1,11 @@
 #include "human.hpp"
 #include <cctype>
 
-Human::Human(Game& game) : snake_(game.get_snake())
-{
-	game.bindkey(std::bind(&Human::Control, this, std::placeholders::_1));
-}
+Human::Human(Game& game) : snake_(game.make_snake(4)) {}
 
 void Human::Control(int key)
 {
-	auto old_dir = snake_.getdir();
+	auto old_dir = snake_.dir_;
 	Direction new_dir = NOP;
 	switch(std::toupper(key))
 	{

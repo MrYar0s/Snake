@@ -2,11 +2,6 @@
 #define GAME_GAME_HPP
 #include <list>
 #include <random>
-#include "view.hpp"
-
-const int WIDTH = 1920;
-const int HEIGHT = 1080;
-const int START_RABBIT_AMOUNT = 20;
 
 enum Direction
 {
@@ -16,6 +11,26 @@ enum Direction
 	RIGHT = 4,
 	NOP = 9
 };
+using coord = typename std::pair<int, int>;
+class Snake;
+class Game;
+#include "view.hpp"
+
+const int WIDTH = 1920;
+const int HEIGHT = 1080;
+const int START_RABBIT_AMOUNT = 20;
+
+class Snake
+{
+public:
+	Snake(std::list<coord>&& pos, Direction dir);
+	bool is_alive = true;
+	Color clr_ = MAGENTA;
+	std::list<coord> get_coords() const;
+	Direction dir_;
+private:
+	std::list<coord> pos_;
+};
 
 class Game
 {
@@ -24,12 +39,14 @@ public:
 	~Game();
 	const auto& get_rabbit() const;
 	view* get_view();
+	Snake& make_snake(size_t len);
 	void generate_rabbit();
 	void set_view(view* v);
 	void update();
 	void bindtick(int period);
 	bool isinborder(coord rabbit) const;
 private:
+	std::list<Snake> snakes_;
 	std::list<coord> rabbits_;
 	view* view_;
 };
