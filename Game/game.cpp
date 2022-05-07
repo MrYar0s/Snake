@@ -38,18 +38,17 @@ void Game::bindtick(int period)
 	view_->bindtick(std::bind(&Game::update, this), period);
 }
 
-Snake::Snake(std::list<coord>&& pos, Direction dir) : dir_(dir), pos_(pos) {}
+Snake::Snake(std::list<coord>&& pos) : pos_(pos) {}
 
 Snake& Game::make_snake(size_t len)
 {
 	std::list<coord> body;
 	body.push_back(std::make_pair(10, 30));
-	Direction dir = RIGHT;
 	for(size_t i = 0; i < len; i++)
 	{
 		body.push_back(body.back());
 	}
-	snakes_.push_back(Snake(std::move(body), dir));
+	snakes_.push_back(Snake(std::move(body)));
 	return snakes_.back();
 }
 
@@ -115,7 +114,7 @@ void Game::update()
 			return std::find(l.cbegin(), l.cend(), next) != l.cend();
 		};
 		if((next.first <= 1 && snake_it.dir_ == LEFT) || (next.first >= view_->max_x() && snake_it.dir_ == RIGHT) ||
-			(next.second <= 1 && snake_it.dir_ == DOWN) || (next.second > view_->max_y() && snake_it.dir_ == UP) ||
+			(next.second <= 1 && snake_it.dir_ == UP) || (next.second > view_->max_y() && snake_it.dir_ == DOWN) ||
 			std::find_if(snakes_.cbegin(), snakes_.cend(), predict) != snakes_.cend())
 		{
 			snake_it.is_alive = false;
@@ -133,8 +132,8 @@ void Game::update()
 				snake_it.pos_.emplace_front(next);
 				snake_it.pos_.pop_back();
 			}
+			view_->drawSnake(snake_it);
 		}
-		view_->drawSnake(snake_it);
 	}
 }
 

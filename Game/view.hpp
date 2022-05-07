@@ -35,6 +35,8 @@ public:
 	void bindkey(KeyFn callkey);
 	virtual void drawRabbit(coord rab) = 0;
 	virtual void drawSnake(const Snake& snake) = 0;
+	virtual void drawSnakeHead(const Snake& snake) = 0;
+	virtual void drawSnakeMove(const Snake& snake) = 0;
 	virtual void stop() = 0;
 private:
 	static view* obj;

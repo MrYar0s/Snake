@@ -10,6 +10,8 @@ public:
 	virtual void mainloop();
 	virtual void drawRabbit(coord rab);
 	virtual void drawSnake(const Snake& snake);
+	virtual void drawSnakeHead(const Snake& snake);
+	virtual void drawSnakeMove(const Snake& snake);
 	virtual void stop();
 };
 

@@ -131,6 +131,21 @@ void tview::drawRabbit(coord rab)
 	putc('o');
 }
 
+void tview::drawSnakeHead(const Snake& snake)
+{
+	setcolor(GREEN, snake.clr_);
+	auto head = snake.pos_.front();
+	gotoxy(head.first, head.second);
+	putc(snake.symbol_);
+}
+
+void tview::drawEmpty(coord pos)
+{
+	setcolor(BLACK, BLACK);
+	gotoxy(pos.first, pos.second);
+	putc(' ');
+}
+
 void tview::drawSnake(const Snake& snake)
 {
 	setcolor(GREEN, snake.clr_);
@@ -140,6 +155,15 @@ void tview::drawSnake(const Snake& snake)
 		gotoxy(cord.first, cord.second);
 		putc('@');
 	}
+	auto head = snake.pos_.front();
+	gotoxy(head.first, head.second);
+	putc(snake.symbol_);
+}
+
+void tview::drawSnakeMove(const Snake& snake)
+{
+	drawSnakeHead(snake);
+	drawEmpty(snake.pos_.back());
 }
 
 void tview::stop()

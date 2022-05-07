@@ -23,11 +23,12 @@ const int START_RABBIT_AMOUNT = 20;
 class Snake
 {
 public:
-	Snake(std::list<coord>&& pos, Direction dir);
+	explicit Snake(std::list<coord>&& pos);
 	bool is_alive = true;
 	Color clr_ = MAGENTA;
-	Direction dir_;
+	Direction dir_ = RIGHT;
 	std::list<coord> pos_;
+	unsigned char symbol_ = '>';
 };
 
 class Game

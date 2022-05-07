@@ -18,7 +18,11 @@ void gview::drawRabbit(coord rab) {}
 
 void gview::drawSnake(const Snake& snake) {}
 
-void gview::stop() {};
+void gview::stop() {}
+
+void gview::drawSnakeHead(const Snake& snake) {}
+
+void gview::drawSnakeMove(const Snake& snake) {}
 
 void gview::mainloop()
 {
