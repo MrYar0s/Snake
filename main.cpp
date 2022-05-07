@@ -12,7 +12,7 @@ int main(int argc, char const *argv[])
 	{
 		game.set_view(view::get(argv[1]));
 	}
-	game.bindtick(500);
+	game.bindtick(300);
 	Human hm(game);
 	game.get_view()->mainloop();
 	return 0;

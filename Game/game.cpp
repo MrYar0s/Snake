@@ -1,9 +1,34 @@
 #include "game.hpp"
+#include <algorithm>
 
 std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_int_distribution<> distrib_x(1, WIDTH);
 std::uniform_int_distribution<> distrib_y(1, HEIGHT);
+
+coord nextcoord(coord pos, Direction dir)
+{
+	switch(dir)
+	{
+		case UP:
+			++pos.second;
+			break;
+		case DOWN:
+			--pos.second;
+			break;
+		case RIGHT:
+			++pos.first;
+			break;
+		case LEFT:
+			--pos.first;
+			break;
+		case NOP:
+			break;
+		default:
+			break;
+	}
+	return pos;
+}
 
 Game::Game()
 {}
@@ -14,11 +39,6 @@ void Game::bindtick(int period)
 }
 
 Snake::Snake(std::list<coord>&& pos, Direction dir) : dir_(dir), pos_(pos) {}
-
-std::list<coord> Snake::get_coords() const
-{
-	return pos_;
-}
 
 Snake& Game::make_snake(size_t len)
 {
@@ -82,8 +102,37 @@ void Game::update()
 	{
 		view_->drawRabbit(rabbit_it);
 	}
-	for(auto snake_it : snakes_)
+	for(auto&& snake_it : snakes_)
 	{
+		if(!snake_it.is_alive)
+		{
+			continue;
+		}
+		auto next = nextcoord(snake_it.pos_.front(), snake_it.dir_);
+		auto predict = [=](auto&& snk){
+			auto& l = snk.pos_;
+			return std::find(l.cbegin(), l.cend(), next) != l.cend();
+		};
+		if((next.first <= 1 && snake_it.dir_ == LEFT) || (next.first >= view_->max_x() && snake_it.dir_ == RIGHT) ||
+			(next.second <= 1 && snake_it.dir_ == DOWN) || (next.second > view_->max_y() && snake_it.dir_ == UP) ||
+			std::find_if(snakes_.cbegin(), snakes_.cend(), predict) != snakes_.cend())
+		{
+			snake_it.is_alive = false;
+		}
+		else
+		{
+			auto rabbit_it = std::find(rabbits_.begin(), rabbits_.end(), next);
+			if(rabbit_it != rabbits_.end())
+			{
+				snake_it.pos_.emplace_front(next);
+				rabbits_.erase(rabbit_it);
+			}
+			else
+			{
+				snake_it.pos_.emplace_front(next);
+				snake_it.pos_.pop_back();
+			}
+		}
 		view_->drawSnake(snake_it);
 	}
 }

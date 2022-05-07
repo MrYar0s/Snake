@@ -33,6 +33,11 @@ void view::bindtick(TickFn calltick, int period)
 	period_ = period;
 }
 
+void view::bindkey(KeyFn callkey)
+{
+	callkey_.push_back(callkey);
+}
+
 int view::max_x()
 {
 	return width - 1;

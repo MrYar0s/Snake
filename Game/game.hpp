@@ -26,9 +26,7 @@ public:
 	Snake(std::list<coord>&& pos, Direction dir);
 	bool is_alive = true;
 	Color clr_ = MAGENTA;
-	std::list<coord> get_coords() const;
 	Direction dir_;
-private:
 	std::list<coord> pos_;
 };
 

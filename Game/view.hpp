@@ -18,6 +18,7 @@ enum Color
 };
 
 using TickFn = std::function<void()>;
+using KeyFn = std::function<void(int)>;
 class view;
 #include "game.hpp"
 
@@ -31,12 +32,14 @@ public:
 	int max_x();
 	int max_y();
 	void bindtick(TickFn calltick, int period);
+	void bindkey(KeyFn callkey);
 	virtual void drawRabbit(coord rab) = 0;
 	virtual void drawSnake(const Snake& snake) = 0;
 private:
 	static view* obj;
 protected:
 	std::list<TickFn> calltick_;
+	std::list<KeyFn> callkey_;
 	int period_;
 	int width;
 	int height;
