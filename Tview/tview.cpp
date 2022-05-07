@@ -17,7 +17,7 @@ void onsig(int sig)
 
 tview::tview()
 {
-	std::cout << "TEXT VIEW STARTED"/*<< std::flush*/;
+	std::cout << "TEXT VIEW STARTED";
 	tcgetattr(0, &old);
 	termios start = old;
 	cfmakeraw(&start);
@@ -50,7 +50,7 @@ void tview::putc(char c)
 
 void tview::gotoxy(int x, int y)
 {
-	std::cout << "\e["<< y << ";" << x << "H"/*<< std::flush*/;
+	std::cout << "\e["<< y << ";" << x << "H";
 }
 
 void tview::gotoxyrel(int x, int y)
@@ -68,8 +68,8 @@ void tview::gotoxyrel(int x, int y)
 		y = -y;
 	}
 	else {yc = 'B';}
-	if(x) {std::cout << "\e[" << x << xc/*<< std::flush*/;}
-	if(y) {std::cout << "\e[" << y << yc/*<< std::flush*/;}
+	if(x) {std::cout << "\e[" << x << xc;}
+	if(y) {std::cout << "\e[" << y << yc;}
 }
 
 void tview::hline(int len)
@@ -106,7 +106,7 @@ void tview::box(int width, int height)
 
 void tview::setcolor(Color fore, Color back) const
 {
-	std::cout << "\e[" << fore + 30 << ";" << back + 40 << "m"/*<< std::flush*/;
+	std::cout << "\e[" << fore + 30 << ";" << back + 40 << "m";
 }
 
 void tview::resetColor () const
@@ -202,7 +202,6 @@ void tview::mainloop()
 			for(auto&& call : calltick_)
 			{
 				call();
-				std::cout << std::flush;
 			}
 			nexttime = period_;
 		}
