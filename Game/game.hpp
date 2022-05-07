@@ -3,6 +3,8 @@
 #include <list>
 #include <random>
 
+const int PERIOD = 300;
+
 enum Direction
 {
 	UP = 0,
@@ -34,15 +36,13 @@ public:
 class Game
 {
 public:
-	Game();
+	explicit Game(view* v);
 	~Game();
 	const auto& get_rabbit() const;
 	view* get_view();
 	Snake& make_snake(size_t len);
 	void generate_rabbit();
-	void set_view(view* v);
 	void update();
-	void bindtick(int period);
 	bool isinborder(coord rabbit) const;
 private:
 	std::list<Snake> snakes_;

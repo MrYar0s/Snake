@@ -30,12 +30,10 @@ coord nextcoord(coord pos, Direction dir)
 	return pos;
 }
 
-Game::Game()
-{}
-
-void Game::bindtick(int period)
+Game::Game(view* v) : view_(v)
 {
-	view_->bindtick(std::bind(&Game::update, this), period);
+	view_->bindtick(std::bind(&Game::update, this), PERIOD);
+	view_->bindkey([=](int key){if(std::toupper(key) == 'Q') view_->stop();});
 }
 
 Snake::Snake(std::list<coord>&& pos) : pos_(pos) {}
@@ -50,12 +48,6 @@ Snake& Game::make_snake(size_t len)
 	}
 	snakes_.push_back(Snake(std::move(body)));
 	return snakes_.back();
-}
-
-void Game::set_view(view* v)
-{
-	view_ = v;
-	view_->bindkey([=](int key){if(std::toupper(key) == 'Q') view_->stop();});
 }
 
 bool Game::isinborder(coord rabbit) const

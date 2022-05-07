@@ -3,16 +3,16 @@
 
 int main(int argc, char const *argv[])
 {
-	Game game;
+	view* v;
 	if(argc == 1)
 	{
-		game.set_view(view::get("text"));
+		v = view::get("text");
 	}
 	else
 	{
-		game.set_view(view::get(argv[1]));
+		v = view::get(argv[1]);
 	}
-	game.bindtick(300);
+	Game game{v};
 	Human hm(game);
 	game.get_view()->mainloop();
 	return 0;
