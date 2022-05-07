@@ -7,8 +7,8 @@
 #include <sys/ioctl.h>
 #include <chrono>
 
-termios old;
-bool final = false;
+static termios old;
+static bool final = false;
 
 void onsig(int sig)
 {
