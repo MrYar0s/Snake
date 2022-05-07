@@ -1,7 +1,10 @@
 #include "human.hpp"
 #include <cctype>
 
-Human::Human(Game& game) : snake_(game.make_snake(4)) {}
+Human::Human(Game& game) : snake_(game.make_snake(4))
+{
+	game.get_view()->bindkey(std::bind(&Human::Control, this, std::placeholders::_1));
+}
 
 void Human::Control(int key)
 {
@@ -20,6 +23,9 @@ void Human::Control(int key)
 				break;
 		case 'S': 
 				new_dir = DOWN;
+				break;
+		default:
+				new_dir = NOP;
 				break;
 	}
 	if(std::abs(new_dir - old_dir) == 1)

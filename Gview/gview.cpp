@@ -18,6 +18,8 @@ void gview::drawRabbit(coord rab) {}
 
 void gview::drawSnake(const Snake& snake) {}
 
+void gview::stop() {};
+
 void gview::mainloop()
 {
 	while(1)

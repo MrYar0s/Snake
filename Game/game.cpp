@@ -56,6 +56,7 @@ Snake& Game::make_snake(size_t len)
 void Game::set_view(view* v)
 {
 	view_ = v;
+	view_->bindkey([=](int key){if(std::toupper(key) == 'Q') view_->stop();});
 }
 
 bool Game::isinborder(coord rabbit) const

@@ -142,12 +142,9 @@ void tview::drawSnake(const Snake& snake)
 	}
 }
 
-void on_key(char key)
+void tview::stop()
 {
-	if(key == 'q')
-	{
-		final = true;
-	}
+	final = true;
 }
 
 void tview::mainloop()
@@ -167,8 +164,13 @@ void tview::mainloop()
 		if(n > 0)
 		{
 			auto end = std::chrono::system_clock::now();
-			unsigned char letter = getchar();
-			on_key(letter);
+//			unsigned char key = std::getchar();
+			#if 0
+			for(auto&& call : callkey_)
+			{
+				call(key);
+			}
+			#endif
 			auto cur = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
 			nexttime = period_ - cur.count();
 		}

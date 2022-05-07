@@ -10,6 +10,7 @@ public:
 	virtual void mainloop();
 	virtual void drawRabbit(coord rab);
 	virtual void drawSnake(const Snake& snake);
+	virtual void stop();
 };
 
 #endif //GAME_GVIEW_HPP
