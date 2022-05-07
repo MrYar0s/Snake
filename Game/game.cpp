@@ -11,10 +11,10 @@ coord nextcoord(coord pos, Direction dir)
 	switch(dir)
 	{
 		case UP:
-			++pos.second;
+			--pos.second;
 			break;
 		case DOWN:
-			--pos.second;
+			++pos.second;
 			break;
 		case RIGHT:
 			++pos.first;

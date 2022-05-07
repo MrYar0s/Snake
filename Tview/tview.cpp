@@ -164,13 +164,11 @@ void tview::mainloop()
 		if(n > 0)
 		{
 			auto end = std::chrono::system_clock::now();
-//			unsigned char key = std::getchar();
-			#if 0
+			unsigned char key = std::getchar();
 			for(auto&& call : callkey_)
 			{
 				call(key);
 			}
-			#endif
 			auto cur = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
 			nexttime = period_ - cur.count();
 		}

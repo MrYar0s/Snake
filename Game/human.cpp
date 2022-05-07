@@ -24,11 +24,8 @@ void Human::Control(int key)
 		case 'S': 
 				new_dir = DOWN;
 				break;
-		default:
-				new_dir = NOP;
-				break;
 	}
-	if(std::abs(new_dir - old_dir) == 1)
+	if(std::abs(new_dir - old_dir) == 1 || new_dir == NOP)
 	{
 		new_dir = old_dir;
 	}
