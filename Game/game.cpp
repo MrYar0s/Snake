@@ -36,8 +36,6 @@ Game::Game(view* v) : view_(v)
 	view_->bindkey([=](int key){if(std::toupper(key) == 'Q') view_->stop();});
 }
 
-Snake::Snake(std::list<coord>&& pos) : pos_(pos) {}
-
 Snake& Game::make_snake(size_t len)
 {
 	std::list<coord> body;
