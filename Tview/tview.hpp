@@ -2,6 +2,9 @@
 #define GAME_TVIEW_HPP
 
 #include "view.hpp"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 class tview: public view{
 public:
@@ -20,6 +23,9 @@ public:
 	virtual int max_y();
 	virtual int min_x();
 	virtual int min_y();
+	
+	virtual void lvlup();
+	std::chrono::milliseconds tick_ = 500ms;
 private:
 	void clear();
 	void putc(char c);

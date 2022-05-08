@@ -179,16 +179,23 @@ void tview::stop()
 	final = true;
 }
 
-void tview::mainloop()
+void tview::lvlup()
 {
 	using namespace std::chrono_literals;
-	auto tick = 100ms;
+	if(tick_ > 100ms)
+	{
+		tick_ -= 100ms;
+	}
+}
+
+void tview::mainloop()
+{
 	pollfd fds = {0, POLLIN};
 	while(!final)
 	{
 		auto start = std::chrono::system_clock::now();
 		refresh_stats();
-		while(std::chrono::system_clock::now() < start + tick)
+		while(std::chrono::system_clock::now() < start + tick_)
 		{
 			if(poll(&fds, 1, 10) == 1)
 			{
