@@ -8,6 +8,7 @@
 class gview: public view{
 private:
 	const float pixel = 10.f;
+	int flimit;
 	sf::RenderWindow window_;
 	void refresh_stats(sf::Event event);
 public:
@@ -25,6 +26,7 @@ public:
 	virtual int max_y();
 	virtual int min_x();
 	virtual int min_y();
+	virtual void lvlup();
 };
 
 #endif //GAME_GVIEW_HPP

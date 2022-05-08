@@ -55,7 +55,7 @@ int fromSf(sf::Keyboard::Key code)
 
 gview::gview() : window_(sf::VideoMode(800, 600), "Snake")
 {
-	window_.setFramerateLimit(20);
+	window_.setFramerateLimit(1);
 }
 
 void gview::draw()
@@ -150,6 +150,15 @@ void gview::mainloop()
 		}
 		window_.display();
 	}
+}
+
+void gview::lvlup()
+{
+	if(flimit < 20)
+	{
+		flimit += 5;
+	}
+	window_.setFramerateLimit(flimit);
 }
 
 void gview::refresh_stats(sf::Event event)
