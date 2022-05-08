@@ -58,7 +58,12 @@ gview::gview() : window_(sf::VideoMode(800, 600), "Snake")
 	window_.setFramerateLimit(20);
 }
 
-void gview::draw() {}
+void gview::draw()
+{
+	sf::Vector2u win = window_.getSize();
+	width = win.x/pixel;
+	height = win.y/pixel;
+}
 
 void gview::drawEmpty(coord pos)
 {

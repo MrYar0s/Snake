@@ -116,7 +116,7 @@ void tview::resetColor () const
 
 void tview::draw()
 {
-//	clear();
+	refresh_stats();
 	box(width, height);
 	setcolor(GREEN, BLUE);
 	gotoxy(width/2, 0);
