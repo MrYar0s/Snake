@@ -30,7 +30,10 @@ view* view::get(const char* type)
 void view::bindtick(TickFn calltick, int period)
 {
 	calltick_.push_back(calltick);
-	period_ = period;
+	if(period > 0)
+	{
+		period_ = period;
+	}
 }
 
 void view::bindkey(KeyFn callkey)
