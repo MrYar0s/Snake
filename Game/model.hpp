@@ -29,7 +29,7 @@ enum Direction
 class Snake
 {
 public:
-	explicit Snake(std::list<coord>&& pos) : pos_(pos) {}
+	explicit Snake(std::list<coord>&& pos, Color clr);
 	bool is_alive = true;
 	Color clr_ = MAGENTA;
 	Direction dir_ = RIGHT;
@@ -37,6 +37,13 @@ public:
 	unsigned char symbol_ = '>';
 };
 
-
+class Death
+{
+public:
+	explicit Death(Snake* snake);
+	void die();
+private:
+	Snake* snake_;
+};
 
 #endif //GAME_MODEL_HPP
