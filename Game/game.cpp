@@ -76,6 +76,11 @@ const auto& Game::get_rabbit() const
 	return rabbits_;
 }
 
+const auto& Game::get_snakes() const
+{
+	return snakes_;
+}
+
 view* Game::get_view()
 {
 	return view_;

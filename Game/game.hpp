@@ -14,6 +14,7 @@ public:
 	explicit Game(view* v);
 	~Game();
 	const auto& get_rabbit() const;
+	const auto& get_snakes() const;
 	view* get_view();
 	Snake& make_snake(size_t len);
 	void generate_rabbit();
