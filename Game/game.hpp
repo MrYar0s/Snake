@@ -13,16 +13,17 @@ class Game
 public:
 	explicit Game(view* v);
 	~Game();
-	const auto& get_rabbit() const;
-	const auto& get_snakes() const;
+	const std::list<coord>& get_rabbit() const;
+	const std::list<Snake>& get_snakes() const;
 	view* get_view();
-	Snake& make_snake(size_t len);
+	Snake& make_snake(size_t len, Color clr);
 	void generate_rabbit();
 	void update();
 	bool isinborder(coord rabbit) const;
 private:
 	std::list<Snake> snakes_;
 	std::list<coord> rabbits_;
+	std::list<Death> deaths_;
 	view* view_;
 };
 

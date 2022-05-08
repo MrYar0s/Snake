@@ -1,7 +1,7 @@
 #include "human.hpp"
 #include <cctype>
 
-Human::Human(Game& game) : snake_(game.make_snake(5))
+Human::Human(Game& game) : snake_(game.make_snake(5, MAGENTA))
 {
 	game.get_view()->bindkey(std::bind(&Human::Control, this, std::placeholders::_1));
 }

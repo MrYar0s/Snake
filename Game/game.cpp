@@ -3,8 +3,8 @@
 
 std::random_device rd;
 std::mt19937 gen(rd());
-std::uniform_int_distribution<> distrib_x(1, WIDTH);
-std::uniform_int_distribution<> distrib_y(1, HEIGHT);
+std::uniform_int_distribution<> distrib_x(2, WIDTH - 1);
+std::uniform_int_distribution<> distrib_y(2, HEIGHT - 1);
 
 coord nextcoord(coord pos, Direction dir)
 {
@@ -36,15 +36,17 @@ Game::Game(view* v) : view_(v)
 	view_->bindkey([=](int key){if(std::toupper(key) == 'Q') view_->stop();});
 }
 
-Snake& Game::make_snake(size_t len)
+Snake& Game::make_snake(size_t len, Color clr)
 {
 	std::list<coord> body;
-	body.push_back(std::make_pair(10, 20));
-	for(size_t i = 0; i < len; i++)
+	int x = distrib_x(gen)%(view_->max_x()) + 1;
+	int y = distrib_y(gen)%(view_->max_y()) + 1;
+	body.push_back(std::make_pair(x, y));
+	for(size_t i = 1; i < len; i++)
 	{
 		body.push_back(body.back());
 	}
-	snakes_.push_back(Snake(std::move(body)));
+	snakes_.push_back(Snake(std::move(body), clr));
 	return snakes_.back();
 }
 
@@ -71,12 +73,12 @@ void Game::generate_rabbit()
 	rabbits_.push_back(c);
 }
 
-const auto& Game::get_rabbit() const
+const std::list<coord>& Game::get_rabbit() const
 {
 	return rabbits_;
 }
 
-const auto& Game::get_snakes() const
+const std::list<Snake>& Game::get_snakes() const
 {
 	return snakes_;
 }
@@ -112,7 +114,7 @@ void Game::update()
 			(next.second <= view_->min_y() && snake_it.dir_ == UP) || (next.second > view_->max_y() && snake_it.dir_ == DOWN) ||
 			std::find_if(snakes_.cbegin(), snakes_.cend(), predict) != snakes_.cend())
 		{
-			snake_it.is_alive = false;
+			deaths_.emplace_front(&snake_it);
 			view_->cleanSnake(snake_it);
 		}
 		else
@@ -130,6 +132,10 @@ void Game::update()
 				view_->drawSnakeMove(snake_it);
 				snake_it.pos_.pop_back();
 			}
+		}
+		for(auto&& death : deaths_)
+		{
+			death.die();
 		}
 	}
 }

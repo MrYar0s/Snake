@@ -1,7 +1,7 @@
 #include "bot.hpp"
 #include <functional>
 
-Bot::Bot(Game& game) : snake_(game.make_snake(10)), game_(game), rabbits_(game.get_rabbit()), snakes_(game.get_snakes())
+Bot::Bot(Game& game) : snake_(game.make_snake(10, CYAN)), game_(game), rabbits_(game.get_rabbit()), snakes_(game.get_snakes())
 {
 	game.get_view()->bindtick(std::bind(&Bot::Control, this), 0);
 }
