@@ -165,6 +165,15 @@ void tview::drawSnakeMove(const Snake& snake)
 	drawEmpty(snake.pos_.back());
 }
 
+void tview::cleanSnake(const Snake& snake)
+{
+	auto body = snake.pos_;
+	for(auto cord : body)
+	{
+		drawEmpty(cord);
+	}
+}
+
 void tview::stop()
 {
 	final = true;

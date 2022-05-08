@@ -110,6 +110,7 @@ void Game::update()
 			std::find_if(snakes_.cbegin(), snakes_.cend(), predict) != snakes_.cend())
 		{
 			snake_it.is_alive = false;
+			view_->cleanSnake(snake_it);
 		}
 		else
 		{

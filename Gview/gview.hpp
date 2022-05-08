@@ -19,6 +19,7 @@ public:
 	virtual void drawSnake(const Snake& snake);
 	virtual void drawSnakeHead(coord head, Color clr, unsigned char symbol);
 	virtual void drawSnakeMove(const Snake& snake);
+	virtual void cleanSnake(const Snake& snake);
 	virtual void stop();
 	virtual int max_x();
 	virtual int max_y();

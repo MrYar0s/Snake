@@ -104,6 +104,15 @@ void gview::drawSnakeMove(const Snake& snake)
 	drawEmpty(snake.pos_.back());
 }
 
+void gview::cleanSnake(const Snake& snake)
+{
+	auto body = snake.pos_;
+	for(auto cord : body)
+	{
+		drawEmpty(cord);
+	}
+}
+
 void gview::mainloop()
 {
 	while(window_.isOpen())
