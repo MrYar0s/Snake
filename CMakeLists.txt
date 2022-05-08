@@ -4,17 +4,17 @@ project(snake)
 enable_language(CXX)
 add_compile_options(-Wall -Werror)
 
+set(SFML_DIR SFML/lib/cmake/SFML)
+find_package(SFML 2.5 COMPONENTS graphics REQUIRED window system network audio REQUIRED)
+
 add_executable(${PROJECT_NAME} main.cpp)
+target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system sfml-network sfml-audio)
 
-#For SFML
-#set(SFML_DIR SFML/lib/cmake/SFML)
-#find_package(SFML 2.5 COMPONENTS graphics REQUIRED window system network audio REQUIRED)
-#target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system sfml-network sfml-audio)
-
-file(GLOB_RECURSE GAME_SOURCES Gview/*.[ch]pp Tview/*.[ch]pp Game/*.[ch]pp main.cpp)
+file(GLOB_RECURSE GAME_SOURCES Gview/*.[ch]pp Tview/*.[ch]pp Game/*.[ch]pp)
 set(GAME_SOURCES ${GAME_SOURCES})
 
-add_library(Game SHARED ${GAME_SOURCES})
+add_library(Game STATIC ${GAME_SOURCES})
+target_link_libraries(Game sfml-graphics sfml-window sfml-system sfml-network sfml-audio)
 target_include_directories(Game PUBLIC Game/ Gview/ Tview/)
 
 target_link_libraries(${PROJECT_NAME} Game)
@@ -40,5 +40,8 @@ if(FORMAT)
         message(STATUS "clang-format ON")
 endif()
 
-add_custom_target(run COMMENT "Running the game" COMMAND ./${PROJECT_NAME})
-add_dependencies(run ${PROJECT_NAME})
+add_custom_target(run_text COMMENT "Running the game" COMMAND ./${PROJECT_NAME} text)
+add_dependencies(run_text ${PROJECT_NAME})
+
+add_custom_target(run_graph COMMENT "Running the game" COMMAND ./${PROJECT_NAME} graph)
+add_dependencies(run_graph ${PROJECT_NAME})
