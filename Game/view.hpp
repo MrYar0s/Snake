@@ -3,25 +3,12 @@
 #include <utility>
 #include <functional>
 #include <list>
-
-enum Color
-{
-	BLACK = 0,
-	RED = 1,
-	GREEN = 2,
-	YELLOW = 3,
-	BLUE = 4,
-	MAGENTA = 5,
-	CYAN = 6,
-	WHITE = 7,
-	DEFAULT = 9
-};
+#include "model.hpp"
 
 using TickFn = std::function<void()>;
 using KeyFn = std::function<void(int)>;
-class view;
-#include "game.hpp"
 
+const int PERIOD = 300;
 
 class view{
 public:
