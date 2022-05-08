@@ -20,6 +20,7 @@ public:
 	void generate_rabbit();
 	void update();
 	bool isinborder(coord rabbit) const;
+	void lvlup();
 private:
 	std::list<Snake> snakes_;
 	std::list<coord> rabbits_;

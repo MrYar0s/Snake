@@ -88,6 +88,8 @@ view* Game::get_view()
 	return view_;
 }
 
+static bool upped = false;
+
 void Game::update()
 {
 	while(rabbits_.size() <= START_RABBIT_AMOUNT)
@@ -125,6 +127,7 @@ void Game::update()
 				snake_it.pos_.emplace_front(next);
 				view_->drawSnakeHead(snake_it.pos_.front(), snake_it.clr_, snake_it.symbol_);
 				rabbits_.erase(rabbit_it);
+				snake_it.rabbits_eaten_++;
 			}
 			else
 			{
@@ -137,6 +140,15 @@ void Game::update()
 		{
 			death.die();
 		}
+	}
+	if(snakes_.front().rabbits_eaten_%10 == 0 && upped == false)
+	{
+		upped = true;
+		view_->lvlup();
+	}
+	if(snakes_.front().rabbits_eaten_%10 != 0)
+	{
+		upped = false;
 	}
 }
 

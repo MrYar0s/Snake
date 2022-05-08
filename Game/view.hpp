@@ -29,6 +29,7 @@ public:
 	virtual int max_y() = 0;
 	virtual int min_x() = 0;
 	virtual int min_y() = 0;
+	virtual void lvlup() = 0;
 private:
 	static view* obj;
 protected:

@@ -35,6 +35,7 @@ public:
 	Direction dir_ = RIGHT;
 	std::list<coord> pos_;
 	unsigned char symbol_ = '>';
+	int rabbits_eaten_ = 0;
 };
 
 class Death
