@@ -181,37 +181,29 @@ void tview::stop()
 
 void tview::mainloop()
 {
+	using namespace std::chrono_literals;
+	auto tick = 100ms;
 	pollfd fds = {0, POLLIN};
-	int n;
-	int nexttime = period_;
 	while(!final)
 	{
 		auto start = std::chrono::system_clock::now();
 		refresh_stats();
-		n = poll(&fds, 1, nexttime);
-		if(n < 0)
+		while(std::chrono::system_clock::now() < start + tick)
 		{
-			return;
-		}
-		if(n > 0)
-		{
-			auto end = std::chrono::system_clock::now();
-			unsigned char key = std::getchar();
-			for(auto&& call : callkey_)
+			if(poll(&fds, 1, 10) == 1)
 			{
-				call(key);
+				unsigned char key;
+				read(0, &key, 1);
+				for(auto&& call : callkey_)
+				{
+					call(key);
+				}
 			}
-			auto cur = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
-			nexttime = period_ - cur.count();
 		}
-		if(nexttime < 0 || n == 0)
+		draw();
+		for(auto&& call : calltick_)
 		{
-			draw();
-			for(auto&& call : calltick_)
-			{
-				call();
-			}
-			nexttime = period_;
+			call();
 		}
 	}
 }
