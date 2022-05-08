@@ -18,8 +18,8 @@ class Snake;
 class Game;
 #include "view.hpp"
 
-const int WIDTH = 1920;
-const int HEIGHT = 1080;
+const int WIDTH = 800;
+const int HEIGHT = 600;
 const int START_RABBIT_AMOUNT = 20;
 
 class Snake

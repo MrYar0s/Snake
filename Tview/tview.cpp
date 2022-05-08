@@ -116,7 +116,7 @@ void tview::resetColor () const
 
 void tview::draw()
 {
-	clear();
+//	clear();
 	box(width, height);
 	setcolor(GREEN, BLUE);
 	gotoxy(width/2, 0);
@@ -131,12 +131,11 @@ void tview::drawRabbit(coord rab)
 	putc('o');
 }
 
-void tview::drawSnakeHead(const Snake& snake)
+void tview::drawSnakeHead(coord head, Color clr, unsigned char symbol)
 {
-	setcolor(GREEN, snake.clr_);
-	auto head = snake.pos_.front();
+	setcolor(GREEN, clr);
 	gotoxy(head.first, head.second);
-	putc(snake.symbol_);
+	putc(symbol);
 }
 
 void tview::drawEmpty(coord pos)
@@ -162,7 +161,7 @@ void tview::drawSnake(const Snake& snake)
 
 void tview::drawSnakeMove(const Snake& snake)
 {
-	drawSnakeHead(snake);
+	drawSnakeHead(snake.pos_.front(), snake.clr_, snake.symbol_);
 	drawEmpty(snake.pos_.back());
 }
 
@@ -212,6 +211,32 @@ void tview::refresh_stats()
 {
 	struct winsize stats;
 	ioctl(1, TIOCGWINSZ, &stats);
+	int old_width = width;
+	int old_height = height;
 	width = stats.ws_col;
 	height = stats.ws_row;
+	if(old_width != width || old_height != height)
+	{
+		clear();
+	}
+}
+
+int tview::max_x()
+{
+	return width - 1;
+}
+
+int tview::max_y()
+{
+	return height - 1;
+}
+
+int tview::min_x()
+{
+	return 1;
+}
+
+int tview::min_y()
+{
+	return 1;
 }

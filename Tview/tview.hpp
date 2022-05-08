@@ -11,10 +11,14 @@ public:
 	virtual void draw();
 	virtual void drawRabbit(coord rab);
 	virtual void drawSnake(const Snake& snake);
-	virtual void drawSnakeHead(const Snake& snake);
+	virtual void drawSnakeHead(coord head, Color clr, unsigned char symbol);
 	virtual void drawSnakeMove(const Snake& snake);
 	virtual void stop();
 	virtual void mainloop();
+	virtual int max_x();
+	virtual int max_y();
+	virtual int min_x();
+	virtual int min_y();
 private:
 	void clear();
 	void putc(char c);

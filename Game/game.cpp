@@ -41,7 +41,7 @@ Snake::Snake(std::list<coord>&& pos) : pos_(pos) {}
 Snake& Game::make_snake(size_t len)
 {
 	std::list<coord> body;
-	body.push_back(std::make_pair(10, 30));
+	body.push_back(std::make_pair(10, 20));
 	for(size_t i = 0; i < len; i++)
 	{
 		body.push_back(body.back());
@@ -105,8 +105,8 @@ void Game::update()
 			auto& l = snk.pos_;
 			return std::find(l.cbegin(), l.cend(), next) != l.cend();
 		};
-		if((next.first <= 1 && snake_it.dir_ == LEFT) || (next.first >= view_->max_x() && snake_it.dir_ == RIGHT) ||
-			(next.second <= 1 && snake_it.dir_ == UP) || (next.second > view_->max_y() && snake_it.dir_ == DOWN) ||
+		if((next.first <= view_->min_x() && snake_it.dir_ == LEFT) || (next.first >= view_->max_x() && snake_it.dir_ == RIGHT) ||
+			(next.second <= view_->min_y() && snake_it.dir_ == UP) || (next.second > view_->max_y() && snake_it.dir_ == DOWN) ||
 			std::find_if(snakes_.cbegin(), snakes_.cend(), predict) != snakes_.cend())
 		{
 			snake_it.is_alive = false;
@@ -117,14 +117,15 @@ void Game::update()
 			if(rabbit_it != rabbits_.end())
 			{
 				snake_it.pos_.emplace_front(next);
+				view_->drawSnakeHead(snake_it.pos_.front(), snake_it.clr_, snake_it.symbol_);
 				rabbits_.erase(rabbit_it);
 			}
 			else
 			{
 				snake_it.pos_.emplace_front(next);
+				view_->drawSnakeMove(snake_it);
 				snake_it.pos_.pop_back();
 			}
-			view_->drawSnake(snake_it);
 		}
 	}
 }

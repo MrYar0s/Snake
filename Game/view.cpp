@@ -37,13 +37,3 @@ void view::bindkey(KeyFn callkey)
 {
 	callkey_.push_back(callkey);
 }
-
-int view::max_x()
-{
-	return width - 1;
-}
-
-int view::max_y()
-{
-	return height - 1;
-}
